@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OperationsViewDlg" widgetVar="OperationsViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{expBundle.ViewOperationsTitle}">
+            <h:form id="OperationsViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{operationsController.selected != null}">
+                        <h:outputText value="#{expBundle.ViewOperationsLabel_id}"/>
+                        <h:outputText value="#{operationsController.selected.id}" title="#{expBundle.ViewOperationsTitle_id}"/>
+                        <h:outputText value="#{expBundle.ViewOperationsLabel_date}"/>
+                        <h:outputText value="#{operationsController.selected.date}" title="#{expBundle.ViewOperationsTitle_date}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{expBundle.ViewOperationsLabel_amount}"/>
+                        <h:outputText value="#{operationsController.selected.amount}" title="#{expBundle.ViewOperationsTitle_amount}"/>
+                        <h:outputText value="#{expBundle.ViewOperationsLabel_userId}"/>
+                        <h:outputText value="#{operationsController.selected.userId}" title="#{expBundle.ViewOperationsTitle_userId}"/>
+                        <h:outputText value="#{expBundle.ViewOperationsLabel_categoryId}"/>
+                        <h:outputText value="#{operationsController.selected.categoryId}" title="#{expBundle.ViewOperationsTitle_categoryId}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{expBundle.Close}" onclick="OperationsViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

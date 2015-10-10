@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="CategoriesCreateDlg" widgetVar="CategoriesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{expBundle.CreateCategoriesTitle}">
+            <h:form id="CategoriesCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{categoriesController.selected != null}">
+                        <p:outputLabel value="#{expBundle.CreateCategoriesLabel_categoryName}" for="categoryName" />
+                        <p:inputText id="categoryName" value="#{categoriesController.selected.categoryName}" title="#{expBundle.CreateCategoriesTitle_categoryName}" required="true" requiredMessage="#{expBundle.CreateCategoriesRequiredMessage_categoryName}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{categoriesController.create}" value="#{expBundle.Save}" update="display,:CategoriesListForm:datalist,:growl" oncomplete="handleSubmit(args,'CategoriesCreateDialog');"/>
+                    <p:commandButton value="#{expBundle.Cancel}" onclick="CategoriesCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

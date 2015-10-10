@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UsersEditDlg" widgetVar="UsersEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{expBundle.EditUsersTitle}">
+            <h:form id="UsersEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{usersController.selected != null}">
+                        <p:outputLabel value="#{expBundle.EditUsersLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{usersController.selected.id}" title="#{expBundle.EditUsersTitle_id}" required="true" requiredMessage="#{expBundle.EditUsersRequiredMessage_id}"/>
+                        <p:outputLabel value="#{expBundle.EditUsersLabel_fname}" for="fname" />
+                        <p:inputText id="fname" value="#{usersController.selected.fname}" title="#{expBundle.EditUsersTitle_fname}" required="true" requiredMessage="#{expBundle.EditUsersRequiredMessage_fname}"/>
+                        <p:outputLabel value="#{expBundle.EditUsersLabel_lname}" for="lname" />
+                        <p:inputText id="lname" value="#{usersController.selected.lname}" title="#{expBundle.EditUsersTitle_lname}" required="true" requiredMessage="#{expBundle.EditUsersRequiredMessage_lname}"/>
+                        <p:outputLabel value="#{expBundle.EditUsersLabel_email}" for="email" />
+                        <p:inputText id="email" value="#{usersController.selected.email}" title="#{expBundle.EditUsersTitle_email}" required="true" requiredMessage="#{expBundle.EditUsersRequiredMessage_email}"/>
+                        <p:outputLabel value="#{expBundle.EditUsersLabel_username}" for="username" />
+                        <p:inputText id="username" value="#{usersController.selected.username}" title="#{expBundle.EditUsersTitle_username}" required="true" requiredMessage="#{expBundle.EditUsersRequiredMessage_username}"/>
+                        <p:outputLabel value="#{expBundle.EditUsersLabel_password}" for="password" />
+                        <p:inputTextarea rows="4" cols="30" id="password" value="#{usersController.selected.password}" title="#{expBundle.EditUsersTitle_password}" required="true" requiredMessage="#{expBundle.EditUsersRequiredMessage_password}"/>
+                        <p:outputLabel for="privilege" value="Privilege:" />
+                        <p:selectOneMenu id="privilege" value="#{usersController.selected.privileges}" style="width:125px">
+                            
+                            <f:selectItem itemLabel="Normal" itemValue="0" />
+                            <f:selectItem itemLabel="Admin" itemValue="1" />                            
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{usersController.update}" value="#{expBundle.Save}" update="display,:UsersListForm:datalist,:growl" oncomplete="handleSubmit(args, 'UsersEditDialog');"/>
+                    <p:commandButton value="#{expBundle.Cancel}" onclick="UsersEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

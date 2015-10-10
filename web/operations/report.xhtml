@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:composition template="/report_template.xhtml">
+        
+        
+        <ui:define name="title">
+            <h:outputText value="Report"></h:outputText>
+        </ui:define>
+        
+        <ui:define name="body">
+            <h:form id="OperationsListForm">
+                <p:panel >
+                    <p:dataTable id="datalist" value="#{operationsController.items1}" var="item"
+                                 selectionMode="single" selection="#{operationsController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+                        
+                        
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{expBundle.ListOperationsTitle_date}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.date}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                            <f:facet name="footer">
+                                <h:outputLabel value="TOTAL" style="font-size: 12pt"/>
+                            </f:facet>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{expBundle.ListOperationsTitle_userId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.userId.fname}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{expBundle.ListOperationsTitle_categoryId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.categoryId.categoryName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{expBundle.ListOperationsTitle_amount}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.amount}"/>
+                            <f:facet name="footer">
+                                <h:outputLabel value="#{report.dbData()}"  style="font-size: 12pt"/>
+                            </f:facet>                             
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:button id="backButton" value="Back to Expense Management" outcome="/operations/List.xhtml"/>
+                            <p:commandButton id="printPdf" ajax="false" value="PDF" actionListener="#{Export.exportPdf}"/>
+                            <p:commandButton id="printXML" ajax="false" value="XML" actionListener="#{Export.exportXML}"/>
+                            <p:commandButton id="printXLS" ajax="false" value="XLS" actionListener="#{Export.exportXLS}"/>
+                            <p:commandButton id="logoutButton" value="Logout" action="#{logout.reset()}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>                  
+            </h:form>
+        </ui:define>
+    </ui:composition>    
+</html>
