@@ -59,16 +59,31 @@
                                 <h:outputLabel value="#{report.dbData()}"  style="font-size: 12pt"/>
                             </f:facet>                             
                         </p:column>
+
                         <f:facet name="footer">
-                            <p:button id="backButton" value="Back to Expense Management" outcome="/operations/List.xhtml"/>
+                            
+                            <p:selectOneMenu style="float: left;" id="userId" value="#{Export.select}" required="true" requiredMessage="#{expBundle.EditOperationsRequiredMessage_userId}">
+                            <f:selectItems value="#{usersController.itemsAvailableSelectMany}"
+                                           var="userIdItem"
+                                           itemValue="#{userIdItem.username}"/>
+                            </p:selectOneMenu>                            
+                            <p:commandButton style="float: left;" id="printPdf2" ajax="false" value="PDF" actionListener="#{Export.exportPdf2}"/>
+                            <p:commandButton style="float: left;" id="printXLS2" ajax="false" value="XLS" actionListener="#{Export.exportXLS2}"/>
+                            
+                            
                             <p:commandButton id="printPdf" ajax="false" value="PDF" actionListener="#{Export.exportPdf}"/>
                             <p:commandButton id="printXML" ajax="false" value="XML" actionListener="#{Export.exportXML}"/>
                             <p:commandButton id="printXLS" ajax="false" value="XLS" actionListener="#{Export.exportXLS}"/>
-                            <p:commandButton id="logoutButton" value="Logout" action="#{logout.reset()}"/>
+                            
+                            
+                            <p:button style="float: right;" id="backButton" value="Back" outcome="/operations/List.xhtml"/>
+                            <p:commandButton id="logoutButton" value="Logout" action="#{logout.reset()}" style="float: right;"/>
                         </f:facet>
                     </p:dataTable>
+                                            
                 </p:panel>                  
             </h:form>
         </ui:define>
-    </ui:composition>    
+    </ui:composition> 
+ 
 </html>

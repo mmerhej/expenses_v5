@@ -29,22 +29,35 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 
 @ManagedBean(name = "Export")
 @SessionScoped
-public class Export {
+    public class Export {
 
-    JasperPrint jasperprint;
-    Connection conn;
     private Object response;
+    private HashMap hash;
+    private String select;
+    
+    JasperPrint jasperprint;
+    JasperPrint jasperprint2;
+    Connection conn;
 
+    public String getSelect() {
+        return select;
+    }
+
+    public void setSelect(String select) {
+        this.select = select;
+    }
+    
     public void init2() throws JRException, ClassNotFoundException, SQLException{
-    Class.forName("com.mysql.jdbc.Driver");
-    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/expenses","root","123");    
+    Class.forName("com.mysql.jdbc.Driver");    
+    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/expenses","root","123");
+    hash = new HashMap();
+    hash.put("usr",select);
     jasperprint= JasperFillManager.fillReport("/home/mmerhej/NetBeansProjects/expenses_v5/web/reports/report1.jasper", new HashMap(),conn);
-        
+    jasperprint2= JasperFillManager.fillReport("/home/mmerhej/NetBeansProjects/expenses_v5/web/reports/report2.jasper", hash,conn);    
     }
     
     public void exportPdf(ActionEvent actionevent) throws JRException, IOException, ClassNotFoundException, SQLException {
@@ -59,7 +72,7 @@ public class Export {
         }
     }
 
-        public void exportXML(ActionEvent actionevent) throws JRException, IOException, ClassNotFoundException, SQLException {
+      public void exportXML(ActionEvent actionevent) throws JRException, IOException, ClassNotFoundException, SQLException {
     init2();
     
     HttpServletResponse httpServletResponse= (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
@@ -76,6 +89,35 @@ public class Export {
     
     JRXlsxExporter exporter = new JRXlsxExporter();
     exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperprint);
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    HttpServletResponse httpServletResponse= (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+    httpServletResponse.addHeader("Content-disposition", "attachment; filename=report.xlsx");
+    ServletOutputStream servletOutputStream;
+    servletOutputStream = httpServletResponse.getOutputStream();
+    exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+    httpServletResponse.getOutputStream().write(os.toByteArray());
+    httpServletResponse.flushBuffer();
+    exporter.exportReport();
+        }
+    
+        public void exportPdf2(ActionEvent actionevent) throws JRException, IOException, ClassNotFoundException, SQLException {
+    init2();
+    
+    HttpServletResponse httpServletResponse= (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+    httpServletResponse.addHeader("Content-disposition",  "inline; filename=report.pdf");
+        try (ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream()) {
+            JasperExportManager.exportReportToPdfStream(jasperprint2, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+            servletOutputStream.flush();
+        }
+    }
+     
+ 
+    public void exportXLS2(ActionEvent actionevent) throws JRException, IOException, ClassNotFoundException, SQLException {
+    init2();
+    
+    JRXlsxExporter exporter = new JRXlsxExporter();
+    exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperprint2);
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     HttpServletResponse httpServletResponse= (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
     httpServletResponse.addHeader("Content-disposition", "attachment; filename=report.xlsx");
