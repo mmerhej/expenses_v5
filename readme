@@ -1,0 +1,9 @@
+Here are a few pointers to make running this project easier
+1- install xampp as it will install mySQL, Apache and FTP servers without the need for individual installs
+access the console with the following command:
+sudo /opt/lampp/manager-linux.run
+running as super user will require root password
+2- in the console run the mySQL serve
+3- create a new database and import expenses.sql
+4- change root password for phpMyadmin to '123' for a quick connection to database
+5- open netbeans and run the project
